@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des catégories{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Liste des catégories</h1>
+
+        <a href="{{ path('app_categorie_nouvelle') }}" class="btn btn-primary">
+            Ajouter une catégorie
+        </a>
+
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for categorie in categories %}
+                    <tr>
+                        <td>{{ categorie.id }}</td>
+                        <td>{{ categorie.nom }}</td>
+                        <td>{{ categorie.description }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">Aucune catégorie trouvée.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

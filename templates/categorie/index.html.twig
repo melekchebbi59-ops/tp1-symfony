@@ -1,3 +1,4 @@
+
 {% extends 'base.html.twig' %}
 
 {% block title %}Liste des catégories{% endblock %}
@@ -6,31 +7,69 @@
     <div class="container mt-4">
         <h1>Liste des catégories</h1>
 
-        <a href="{{ path('app_categorie_nouvelle') }}" class="btn btn-primary">
+        <a href="{{ path('app_categorie_nouvelle') }}">
             Ajouter une catégorie
         </a>
 
-        <table class="table mt-3">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nom</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for categorie in categories %}
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('danger') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {% if categories is not empty %}
+            <table class="table table-bordered mt-3">
+                <thead>
                     <tr>
-                        <td>{{ categorie.id }}</td>
-                        <td>{{ categorie.nom }}</td>
-                        <td>{{ categorie.description }}</td>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Nombre d'articles</th>
+                        <th>Actions</th>
                     </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="3">Aucune catégorie trouvée.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+
+                <tbody>
+                    {% for categorie in categories %}
+                        <tr>
+                            <td>{{ categorie.id }}</td>
+                            <td>{{ categorie.nom }}</td>
+                            <td>{{ categorie.description ?: 'Aucune description' }}</td>
+                            <td>{{ categorie.articles|length }}</td>
+                            <td>
+                                <a href="{{ path('app_categorie_show', {'id': categorie.id}) }}">
+                                    Voir
+                                </a>
+
+                                <a href="{{ path('app_categorie_modifier', {'id': categorie.id}) }}">
+                                    Modifier
+                                </a>
+
+                                <form method="post"
+                                      action="{{ path('app_categorie_supprimer', {'id': categorie.id}) }}"
+                                      style="display:inline"
+                                      onsubmit="return confirm('Supprimer cette catégorie ?');">
+
+                                    <input type="hidden"
+                                           name="_token"
+                                           value="{{ csrf_token('delete' ~ categorie.id) }}">
+
+                                    <button type="submit">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Aucune catégorie enregistrée.</p>
+        {% endif %}
     </div>
 {% endblock %}
+

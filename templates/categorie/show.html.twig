@@ -1,0 +1,60 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ categorie.nom }}{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>{{ categorie.nom }}</h1>
+
+        <p>
+            <strong>Description :</strong>
+            {{ categorie.description ?: 'Aucune description' }}
+        </p>
+
+        <p>
+            <strong>Nombre d'articles :</strong>
+            {{ articles|length }}
+        </p>
+
+        <h2>Articles de cette catégorie</h2>
+
+        {% if articles is not empty %}
+            <ul>
+                {% for article in articles %}
+                    <li>
+                        <a href="{{ path('app_article_show', {'id': article.id}) }}">
+                            {{ article.titre }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Aucun article dans cette catégorie.</p>
+        {% endif %}
+
+        <a href="{{ path('app_categorie_modifier', {'id': categorie.id}) }}">
+            Modifier
+        </a>
+
+        <form method="post"
+              action="{{ path('app_categorie_supprimer', {'id': categorie.id}) }}"
+              onsubmit="return confirm('Voulez-vous vraiment supprimer cette catégorie ?');">
+
+            <input type="hidden"
+                   name="_token"
+                   value="{{ csrf_token('delete' ~ categorie.id) }}">
+
+            <button type="submit">Supprimer</button>
+        </form>
+
+        <a href="{{ path('app_article_nouveau') }}?categorie={{ categorie.id }}">
+            Créer un article dans cette catégorie
+        </a>
+
+        <br><br>
+
+        <a href="{{ path('app_categories') }}">Retour aux catégories</a>
+    </div>
+{% endblock %}
+

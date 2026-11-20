@@ -1,10 +1,16 @@
 import './stimulus_bootstrap.js';
+import Swal from 'sweetalert2';
+
 /*
  * Welcome to your app's main JavaScript file!
- *
- * This file will be included onto the page via the importmap() Twig function,
- * which should already be in your base.html.twig.
  */
 import './styles/app.css';
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+
+Swal.fire({
+    title: 'Bienvenue !',
+    text: 'SweetAlert2 fonctionne avec Symfony AssetMapper.',
+    icon: 'success',
+    confirmButtonText: 'OK'
+});

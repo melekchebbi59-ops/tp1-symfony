@@ -3,14 +3,17 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
+
     <h1>Bienvenue sur notre application Symfony !</h1>
 
-    <p>
-        Ceci est votre première application construite avec le framework
-        <strong>Symfony 7.4</strong>.
-    </p>
+    <div class="alert alert-success mt-4">
+        <h4>Compteur de visites</h4>
 
-    <p>
-        Date actuelle : {{ "now"|date("d/m/Y H:i") }}
-    </p>
+        <p>
+            Vous avez visité cette page
+            <strong>{{ nbVisites }}</strong>
+            fois.
+        </p>
+    </div>
+
 {% endblock %}
